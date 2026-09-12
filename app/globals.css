@@ -1,26 +1,433 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ─── Tailwind v4 Theme ──────────────────────────────────────────── */
+@theme {
+  /* Colors */
+  --color-venus-deep:  #1C0F2E;
+  --color-venus-gold:  #C9A84C;
+  --color-venus-blush: #F2DFD0;
+  --color-venus-rose:  #C97D7D;
+  --color-venus-white: #FDF8F4;
+  --color-venus-ink:   #2A1A1A;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Fonts */
+  --font-family-cormorant: "Cormorant Garamond", serif;
+  --font-family-dm:        "DM Sans", sans-serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Font sizes */
+  --font-size-hero:    72px;
+  --font-size-section: 40px;
+  --font-size-card:    24px;
+  --font-size-body:    16px;
+  --font-size-caption: 13px;
+  --font-size-btn:     15px;
+
+  /* Animations */
+  --animate-marquee:    marquee 25s linear infinite;
+  --animate-fade-in:    fadeIn 0.6s ease-out forwards;
+  --animate-slide-up:   slideUp 0.5s ease-out forwards;
+  --animate-pulse-glow: pulseGlow 2s ease-in-out infinite;
+
+  /* Keyframes */
+  @keyframes marquee {
+    0%   { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
   }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); }
+    50%       { box-shadow: 0 0 20px 4px rgba(201,168,76,0.3); }
+  }
+
+  /* Background images */
+  --background-image-venus-gradient: linear-gradient(135deg, #1C0F2E 0%, #2D1447 100%);
+  --background-image-gold-gradient:  linear-gradient(90deg, #C9A84C 0%, #E8C97A 100%);
+  --background-image-blush-gradient: linear-gradient(180deg, #FDF8F4 0%, #F2DFD0 100%);
+
+  /* Box shadows */
+  --shadow-card-hover: 0 8px 32px rgba(201,168,76,0.2);
+  --shadow-card:       0 2px 16px rgba(28,15,46,0.08);
+  --shadow-nav:        0 2px 20px rgba(28,15,46,0.12);
+  --shadow-gold-glow:  0 0 20px rgba(201,168,76,0.4);
+
+  /* Border radius */
+  --radius-card: 4px;
+
+  /* Max widths */
+  --width-content: 1200px;
+
+  /* Backdrop blur */
+  --blur-nav: 12px;
+
+  /* Z-index */
+  --z-index-nav:      100;
+  --z-index-whatsapp: 200;
+  --z-index-popup:    300;
+  --z-index-drawer:   400;
+}
+
+/* ─── Venus Design Tokens ──────────────────────────────────────────── */
+:root {
+  --venus-deep:  #1C0F2E;
+  --venus-gold:  #C9A84C;
+  --venus-blush: #F2DFD0;
+  --venus-rose:  #C97D7D;
+  --venus-white: #FDF8F4;
+  --venus-ink:   #2A1A1A;
+}
+
+/* ─── Base ──────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--venus-blush);
+  color: var(--venus-ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ─── Typography ────────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+}
+
+h1 { font-size: clamp(44px, 8vw, 72px); letter-spacing: -0.02em; line-height: 1.05; }
+h2 { font-size: clamp(28px, 5vw, 40px); letter-spacing: -0.01em; line-height: 1.15; font-weight: 600; }
+h3 { font-size: 24px; font-family: 'DM Sans', sans-serif; font-weight: 500; }
+
+/* ─── Announcement Bar Marquee ───────────────────────────────────── */
+.marquee-outer {
+  overflow: hidden;
+  position: relative;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* ─── Scroll Progress Bar ───────────────────────────────────────── */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--venus-gold);
+  z-index: 9999;
+  transition: width 0.1s linear;
+  pointer-events: none;
+}
+
+/* ─── Buttons ───────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background-color: var(--venus-rose);
+  color: var(--venus-white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  min-height: 48px;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background-color: #b86c6c;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(201, 125, 125, 0.35);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 27px;
+  background-color: transparent;
+  color: var(--venus-gold);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border-radius: 4px;
+  border: 1.5px solid var(--venus-gold);
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+  min-height: 48px;
+  text-decoration: none;
+}
+
+.btn-ghost:hover {
+  background-color: rgba(201, 168, 76, 0.1);
+  transform: translateY(-1px);
+}
+
+.btn-deep {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background-color: var(--venus-deep);
+  color: var(--venus-gold);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  min-height: 48px;
+  text-decoration: none;
+}
+
+.btn-deep:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* ─── Cards ─────────────────────────────────────────────────────── */
+.card-venus {
+  background-color: var(--venus-white);
+  border-radius: 4px;
+  box-shadow: 0 2px 16px rgba(28, 15, 46, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.card-venus:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(201, 168, 76, 0.2);
+}
+
+/* ─── Gold divider ──────────────────────────────────────────────── */
+.gold-divider {
+  width: 64px;
+  height: 2px;
+  background: var(--venus-gold);
+  margin: 16px 0;
+}
+
+.gold-divider-center {
+  width: 64px;
+  height: 2px;
+  background: var(--venus-gold);
+  margin: 16px auto;
+}
+
+/* ─── Section spacing ───────────────────────────────────────────── */
+.section {
+  padding: 80px 24px;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 56px 16px;
+  }
+}
+
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ─── Form inputs ────────────────────────────────────────────────── */
+.input-venus {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: 1.5px solid rgba(28, 15, 46, 0.15);
+  border-radius: 4px;
+  background-color: var(--venus-white);
+  color: var(--venus-ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.input-venus:focus {
+  border-color: var(--venus-gold);
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
+}
+
+.input-venus.valid {
+  border-color: #4caf82;
+}
+
+.input-venus.error {
+  border-color: #e05252;
+}
+
+/* ─── Badge tags ─────────────────────────────────────────────────── */
+.badge-ending {
+  display: inline-block;
+  padding: 3px 8px;
+  background-color: #e05252;
+  color: white;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-open {
+  display: inline-block;
+  padding: 3px 8px;
+  background-color: rgba(76, 175, 130, 0.15);
+  color: #2d8a60;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 2px;
+}
+
+.badge-closed {
+  display: inline-block;
+  padding: 3px 8px;
+  background-color: rgba(224, 82, 82, 0.12);
+  color: #c0392b;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 2px;
+}
+
+/* ─── Strike-through price ───────────────────────────────────────── */
+.price-original {
+  text-decoration: line-through;
+  opacity: 0.5;
+  font-size: 14px;
+}
+
+.price-offer {
+  color: var(--venus-gold);
+  font-weight: 600;
+  font-size: 20px;
+}
+
+/* ─── Before/After slider ────────────────────────────────────────── */
+.before-after-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  cursor: col-resize;
+  user-select: none;
+}
+
+.before-after-after {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.before-after-divider {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 2px;
+  background: var(--venus-gold);
+  cursor: col-resize;
+}
+
+.before-after-divider::after {
+  content: '◀ ▶';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--venus-gold);
+  color: var(--venus-deep);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+/* ─── Masonry grid ───────────────────────────────────────────────── */
+.masonry-grid {
+  columns: 3 280px;
+  column-gap: 16px;
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 640px) {
+  .masonry-grid {
+    columns: 2 140px;
+    column-gap: 8px;
+  }
+  .masonry-item {
+    margin-bottom: 8px;
+  }
+}
+
+/* ─── Floating WhatsApp pulse ─────────────────────────────────────── */
+.whatsapp-btn {
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+/* ─── Nav backdrop ───────────────────────────────────────────────── */
+.nav-scrolled {
+  backdrop-filter: blur(12px);
+  background-color: rgba(28, 15, 46, 0.85);
+}
+
+/* ─── Before/After label overlays ────────────────────────────────── */
+.ba-label {
+  position: absolute;
+  bottom: 12px;
+  background: rgba(28, 15, 46, 0.7);
+  color: var(--venus-gold);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 2px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }

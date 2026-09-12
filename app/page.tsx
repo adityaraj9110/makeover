@@ -1,69 +1,83 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+import HeroSection from "@/components/HeroSection";
+import OfferSpotlightStrip from "@/components/OfferSpotlightStrip";
+import ServicesQuickGrid from "@/components/ServicesQuickGrid";
+import SocialProofRow from "@/components/SocialProofRow";
+import OutletLocatorMini from "@/components/OutletLocatorMini";
+import InstagramFeed from "@/components/InstagramFeed";
+import Link from "next/link";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title:       "Venus Makeover — Premium Beauty Parlour | 4 Outlets",
+  description: "Transform at Venus Makeover — 4 premium beauty outlets. Bridal makeovers, hair spa, skin care, nail art & more. Book your appointment today.",
+};
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      <HeroSection />
+      <OfferSpotlightStrip />
+      <ServicesQuickGrid />
+      <SocialProofRow />
+      <OutletLocatorMini />
+      <InstagramFeed />
+
+      {/* Final CTA section */}
+      <section
+        className="section bg-venus-deep text-center"
+        id="final-cta"
+        aria-label="Book your appointment"
+      >
+        <div className="section-inner max-w-2xl mx-auto px-6">
+          <p className="font-cormorant text-venus-gold text-xl italic mb-4">Your transformation awaits</p>
+          <h2 className="font-cormorant text-venus-white text-4xl sm:text-5xl font-normal mb-4">
+            Ready for your <em className="text-venus-gold not-italic">glow-up?</em>
+          </h2>
+          <div className="gold-divider-center my-6" />
+          <p className="font-dm text-venus-blush/70 text-lg mb-10">
+            Book an appointment at any of our 4 outlets — it&apos;s free and takes 30 seconds.
           </p>
+          <Link href="/book" className="btn-primary text-base px-10 py-4" id="final-cta-book">
+            Book Now — It&apos;s Free
+          </Link>
+          <div className="flex flex-wrap justify-center gap-6 mt-10">
+            <a
+              href="tel:+919876543210"
+              className="font-dm text-venus-blush/60 hover:text-venus-gold transition-colors flex items-center gap-2 min-h-[44px]"
+              aria-label="Call Venus Makeover main outlet"
+            >
+              📞 +91 98765 43210
+            </a>
+            <a
+              href="tel:+919876543211"
+              className="font-dm text-venus-blush/60 hover:text-venus-gold transition-colors flex items-center gap-2 min-h-[44px]"
+              aria-label="Call Venus Makeover city centre outlet"
+            >
+              📞 +91 98765 43211
+            </a>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </section>
+
+      {/* JSON-LD LocalBusiness schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BeautySalon",
+            "name": "Venus Makeover",
+            "description": "Premium women's beauty parlour with 4 outlets across the city",
+            "url": "https://venusmakeover.in",
+            "priceRange": "₹₹",
+            "image": "/hero.jpg",
+            "sameAs": [
+              "https://instagram.com/venusmakeover",
+              "https://facebook.com/venusmakeover"
+            ]
+          }),
+        }}
+      />
+    </>
   );
 }
